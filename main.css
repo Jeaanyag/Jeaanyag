@@ -27,6 +27,7 @@ body {
     color: #b3905e;
     font-size: 25px;
     text-align: center;
+    margin-bottom: 50px;
     
 }
 
@@ -70,7 +71,7 @@ header {
   border-radius: 50%;
   object-fit:scale-down;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  position:fixed;
+  position:absolute;
   top: 20px;
   left: 20px;
 }

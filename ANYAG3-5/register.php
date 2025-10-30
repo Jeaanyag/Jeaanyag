@@ -1,27 +1,55 @@
 <?php
-include('config.php');
+// =======================
+// DATABASE CONNECTION
+// =======================
+$host = "localhost";
+$user = "root";      // default WAMP username
+$pass = "";          // default WAMP password (empty)
+$db   = "user_db";  
 
-if (isset($_POST['register'])){
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $confirm = $_POST['confirm'];
+// Connect to MySQL
+$conn = mysqli_connect($host, $user, $pass, $db);
 
-    if ($password == $confim){
-        if (strlen($password)>= 8 && strlen($password)<= 20 && preg_match('/[A-Za-z]/', $password) && preg_match ('/[0-9]/', $password)){
-            $hashed_password = md5($password);
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 
-            $query = "INSERT INTO users (username, password) VALUES ('$username', '$hashed_password')";
-            if (mysqli_query($conn, $query)){
-                echo '<p style = "color:green;">Registration Successful!</p>';
-            }else{
-                echo '<p style="color:red;">Error:'. mysqli_error($conn) . '</p>';
-            }
-        }else{
-            echo '<p style = "color:red;">Password must be *-20 characters long and contain letters and numbers. </p>';
-        }
-    }else{
-        echo '<p style = "color:red;">Passwords do not match1 </p>';
+// =======================
+// REGISTRATION LOGIC
+// =======================
+if (isset($_POST['register'])) {
+    // Get form inputs safely
+    $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
+    $lastname  = mysqli_real_escape_string($conn, $_POST['lastname']);
+    $username  = mysqli_real_escape_string($conn, $_POST['username']);
+    $password  = $_POST['password'];
+    $confirm   = $_POST['confirm'];
+
+    // Check if passwords match
+    if ($password !== $confirm) {
+        echo "<script>alert('Passwords do not match!'); window.history.back();</script>";
+        exit();
+    }
+
+    // Check if username already exists
+    $check = mysqli_query($conn, "SELECT * FROM users WHERE username='$username'");
+    if (mysqli_num_rows($check) > 0) {
+        echo "<script>alert('Username already taken!'); window.history.back();</script>";
+        exit();
+    }
+
+    // Hash password before saving
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // Insert new user into the database
+    $query = "INSERT INTO users (firstname, lastname, username, password)
+              VALUES ('$firstname', '$lastname', '$username', '$hashedPassword')";
+
+    if (mysqli_query($conn, $query)) {
+        echo "<script>alert('Registration successful!'); window.location.href='login.html';</script>";
+    } else {
+        echo "Error: " . mysqli_error($conn);
     }
 }
 ?>
-

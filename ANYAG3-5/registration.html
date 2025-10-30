@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Registration Page</title>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Sign Up</h2>
+
+        <div class="name-row">
+    <div class="left-field">
+        <label for="firstname">First Name</label>
+        <input type="text" id="firstname" name="firstname" required>
+    </div>
+
+    <div class="right-field">
+        <label for="lastname">Last Name</label>
+        <input type="text" id="lastname" name="lastname" required>
+    </div>
+</div>
+
+        <form method="POST" action="register.php">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required><br><br>
+
+            <label for="confirm">Confirm Password</label>
+            <input type="password" id="confirm" name="confirm" required><br><br>
+            
+            <button type="submit" name="register">Register</button>
+        </form>
+    </div>
+</body>
+</html>
